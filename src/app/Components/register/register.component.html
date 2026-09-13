@@ -1,0 +1,87 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="header-section">
+      <div class="logo-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <line x1="19" y1="8" x2="19" y2="14"></line>
+          <line x1="22" y1="11" x2="16" y2="11"></line>
+        </svg>
+      </div>
+      <h2>Create Account</h2>
+      <p class="subtitle">Join us today to get started</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name" class="form-label">Full Name</label>
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="name"
+            class="form-control" 
+            [class.is-invalid]="registerForm.get('name')?.touched && registerForm.get('name')?.invalid"
+            formControlName="name" 
+            placeholder="e.g. John Doe"
+          />
+        </div>
+        @if(registerForm.get('name')?.touched && registerForm.get('name')?.invalid) {
+          <small class="errMessage">Name is required</small>
+        }
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <div class="input-wrapper">
+          <input 
+            type="email" 
+            id="email"
+            class="form-control" 
+            [class.is-invalid]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+            formControlName="email" 
+            placeholder="name@example.com"
+          />
+        </div>
+        @if(registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+          <small class="errMessage">Please enter a valid email address</small>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password"
+            class="form-control" 
+            [class.is-invalid]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+            formControlName="password" 
+            placeholder="At least 6 characters"
+          />
+        </div>
+        @if(registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+          <small class="errMessage">Password must be at least 6 characters</small>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-submit">
+        <span>Get Started</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+
+    </form>
+
+    <div class="footer-section">
+      <p>Already have an account? <a routerLink="/login" class="login-link">Log in</a></p>
+    </div>
+  </div>
+</div>
