@@ -1,0 +1,614 @@
+<div class="history-page">
+
+
+  <!-- ========================================
+       PAGE HEADER
+  ========================================= -->
+
+  <div class="history-header">
+
+    <div class="header-content">
+
+      <span class="page-badge">
+        TRANSACTION CENTER
+      </span>
+
+      <h1>
+        Transaction History
+      </h1>
+
+      <p>
+        Track your deposits, withdrawals and money transfers.
+      </p>
+
+    </div>
+
+
+    <div class="header-icon">
+      ₹
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================
+       ACCOUNT SELECTOR
+  ========================================= -->
+
+  <div class="account-selector-card">
+
+    <div class="selector-left">
+
+      <div class="bank-icon">
+        🏦
+      </div>
+
+      <div>
+
+        <span class="section-label">
+          SELECT ACCOUNT
+        </span>
+
+        <h2>
+          Choose an account
+        </h2>
+
+        <p>
+          Select an account to view its transaction history.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="account-selector">
+
+      <label for="accountSelect">
+        ACCOUNT
+      </label>
+
+      <div class="select-wrapper">
+
+        <span class="select-icon">
+          🏦
+        </span>
+
+
+        @if (isLoadingAccounts) {
+
+          <div class="loading-select">
+            Loading accounts...
+          </div>
+
+        } @else {
+
+          <select
+            id="accountSelect"
+            [(ngModel)]="accountId"
+            (change)="onAccountChange()">
+
+            @for (
+              account of accounts;
+              track account.id
+            ) {
+
+              <option [value]="account.id">
+
+                {{ account.accountType }}
+                -
+                {{ account.accountNumber }}
+
+              </option>
+
+            }
+
+          </select>
+
+          <span class="dropdown-arrow">
+            ▼
+          </span>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================
+       ERROR
+  ========================================= -->
+
+  @if (errorMessage) {
+
+    <div class="error-message">
+
+      <span>
+        ⚠
+      </span>
+
+      <div>
+
+        <strong>
+          Something went wrong
+        </strong>
+
+        <p>
+          {{ errorMessage }}
+        </p>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ========================================
+       ACCOUNT SUMMARY
+  ========================================= -->
+
+  @if (getSelectedAccount()) {
+
+    <div class="summary-card">
+
+      <div class="summary-left">
+
+        <div class="account-avatar">
+
+          @if (
+            getSelectedAccount().accountType === 'SAVINGS'
+          ) {
+
+            💰
+
+          } @else {
+
+            💳
+
+          }
+
+        </div>
+
+
+        <div>
+
+          <span class="summary-label">
+            SELECTED ACCOUNT
+          </span>
+
+          <h2>
+            {{ getSelectedAccount().accountType }}
+            Account
+          </h2>
+
+          <p>
+
+            Account Number:
+
+            <strong>
+              {{ getSelectedAccount().accountNumber }}
+            </strong>
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="balance-box">
+
+        <span>
+          CURRENT BALANCE
+        </span>
+
+        <h2>
+          {{ getSelectedAccount().balance | currency:'INR':'symbol':'1.2-2' }}
+        </h2>
+
+        <small>
+          Available balance
+        </small>
+
+      </div>
+
+    </div>
+
+  }
+
+
+
+  <!-- ========================================
+       STATISTICS
+  ========================================= -->
+
+  <div class="stats-grid">
+
+
+    <!-- DEPOSIT -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon deposit-stat">
+        ↓
+      </div>
+
+      <div>
+
+        <span>
+          Total Deposits
+        </span>
+
+        <h3>
+          {{ getTotalByType('DEPOSIT') | currency:'INR':'symbol':'1.2-2' }}
+        </h3>
+
+        <small>
+          Money received
+        </small>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- WITHDRAW -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon withdraw-stat">
+        ↑
+      </div>
+
+      <div>
+
+        <span>
+          Total Withdrawals
+        </span>
+
+        <h3>
+          {{ getTotalByType('WITHDRAW') | currency:'INR':'symbol':'1.2-2' }}
+        </h3>
+
+        <small>
+          Money withdrawn
+        </small>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- TRANSFER -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon transfer-stat">
+        ↔
+      </div>
+
+      <div>
+
+        <span>
+          Total Transfers
+        </span>
+
+        <h3>
+          {{ getTotalByType('TRANSFER') | currency:'INR':'symbol':'1.2-2' }}
+        </h3>
+
+        <small>
+          Money transferred
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ========================================
+       TRANSACTION HISTORY
+  ========================================= -->
+
+  <div class="transactions-card">
+
+
+    <!-- HEADER -->
+
+    <div class="transactions-header">
+
+      <div>
+
+        <span class="section-label">
+          RECENT ACTIVITY
+        </span>
+
+        <h2>
+          Recent Transactions
+        </h2>
+
+        <p>
+          Your latest account activity
+        </p>
+
+      </div>
+
+
+      @if (!isLoadingTransactions) {
+
+        <div class="transaction-badge">
+
+          {{ transactions.length }}
+
+          <span>
+            Transactions
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+
+
+    <!-- ========================================
+         LOADING
+    ========================================= -->
+
+    @if (isLoadingTransactions) {
+
+      <div class="loading-state">
+
+        <div class="loader"></div>
+
+        <h3>
+          Loading Transactions
+        </h3>
+
+        <p>
+          Please wait while we fetch your transaction history.
+        </p>
+
+      </div>
+
+    }
+
+
+
+    <!-- ========================================
+         EMPTY
+    ========================================= -->
+
+    @else if (
+      !isLoadingTransactions &&
+      transactions.length === 0 &&
+      !errorMessage
+    ) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          📭
+        </div>
+
+        <h3>
+          No Transactions Found
+        </h3>
+
+        <p>
+          There are no transactions available for this account.
+        </p>
+
+      </div>
+
+    }
+
+
+
+    <!-- ========================================
+         TRANSACTIONS
+    ========================================= -->
+
+    @else if (
+      !isLoadingTransactions &&
+      transactions.length > 0
+    ) {
+
+      <div class="transaction-list">
+
+        @for (
+          transaction of transactions;
+          track transaction.id
+        ) {
+
+          <div class="transaction-item">
+
+
+            <!-- ICON -->
+
+            <div
+              class="transaction-icon"
+
+              [class.deposit]="
+                transaction.transactionType === 'DEPOSIT'
+              "
+
+              [class.withdraw]="
+                transaction.transactionType === 'WITHDRAW'
+              "
+
+              [class.transfer]="
+                transaction.transactionType === 'TRANSFER'
+              "
+            >
+
+              @if (
+                transaction.transactionType === 'DEPOSIT'
+              ) {
+
+                ↓
+
+              }
+
+              @else if (
+                transaction.transactionType === 'WITHDRAW'
+              ) {
+
+                ↑
+
+              }
+
+              @else {
+
+                ↔
+
+              }
+
+            </div>
+
+
+
+            <!-- INFORMATION -->
+
+            <div class="transaction-info">
+
+              <div class="transaction-title-row">
+
+                <h3>
+                  {{ getTransactionTitle(transaction) }}
+                </h3>
+
+
+                <span
+                  class="type-badge"
+
+                  [class.deposit-badge]="
+                    transaction.transactionType === 'DEPOSIT'
+                  "
+
+                  [class.withdraw-badge]="
+                    transaction.transactionType === 'WITHDRAW'
+                  "
+
+                  [class.transfer-badge]="
+                    transaction.transactionType === 'TRANSFER'
+                  "
+                >
+
+                  {{ transaction.transactionType }}
+
+                </span>
+
+              </div>
+
+
+              <p>
+                {{ transaction.description }}
+              </p>
+
+
+              <span class="transaction-date">
+
+                {{ transaction.transactionDate | date:'dd MMM yyyy' }}
+
+                <span class="dot">
+                  •
+                </span>
+
+                {{ transaction.transactionDate | date:'hh:mm a' }}
+
+              </span>
+
+            </div>
+
+
+
+            <!-- AMOUNT -->
+
+            <div
+              class="transaction-amount"
+
+              [class.positive]="
+                transaction.transactionType === 'DEPOSIT'
+              "
+
+              [class.negative]="
+                transaction.transactionType !== 'DEPOSIT'
+              "
+            >
+
+              <strong>
+
+                @if (
+                  transaction.transactionType === 'DEPOSIT'
+                ) {
+
+                  +
+
+                } @else {
+
+                  -
+
+                }
+
+                {{ transaction.amount | currency:'INR':'symbol':'1.2-2' }}
+
+              </strong>
+
+
+              <span>
+                {{ transaction.transactionType }}
+              </span>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+
+
+    <!-- ========================================
+         FOOTER
+    ========================================= -->
+
+    @if (
+      !isLoadingTransactions &&
+      transactions.length > 0
+    ) {
+
+      <div class="transaction-footer">
+
+        <span>
+          Showing {{ transactions.length }}
+          transaction(s)
+        </span>
+
+        <span class="secure-text">
+          🔒 Secure transaction history
+        </span>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

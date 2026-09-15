@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { RouterLink } from '@angular/router';
 export class LoginComponent {
   loginForm!:FormGroup;
 
-  constructor(private fb:FormBuilder){
+  constructor(private fb:FormBuilder,private http:AuthService,private router:Router){
 
     this.buildForm();
 
@@ -26,6 +27,23 @@ export class LoginComponent {
   }
 
   login(){
+    if(this.loginForm.invalid){
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+    const payload=this.loginForm.value;
+    this.http.login(payload).subscribe({
+      next:(res)=>{
+        localStorage.setItem('token',res.token)
+
+        alert("login Successful")
+        this.router.navigate(['/dashboard'])
+      },
+      error:(error)=>{
+        console.log(error||"Something went wrong");
+        alert(error.message.message||"Login Failed");
+      }
+    })
     console.log(this.loginForm.value)
   }
 }

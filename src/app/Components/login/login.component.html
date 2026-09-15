@@ -36,8 +36,9 @@
                 <div class="input-wrapper">
                      <input type="password" 
                      class="form-control" 
-                      [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('pasword')?.invalid"
-                     formControlName="password" placeholder="Enter your Password">
+                     formControlName="password"
+                      [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                      placeholder="Enter your Password">
                 @if(this.loginForm.get('password')?.touched && this.loginForm.get('password')?.invalid){
                     <small class="errMessage">Password is Required</small>
                 }

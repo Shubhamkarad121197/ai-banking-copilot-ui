@@ -1,0 +1,509 @@
+<div class="dashboard-page">
+
+  <!-- ================= HERO ================= -->
+
+  <section class="dashboard-hero">
+
+    <div class="hero-content">
+
+      <span class="hero-badge">
+        ✨ AI POWERED BANKING
+      </span>
+
+      <h1>
+        Welcome back to
+        <span>AI Banking Copilot</span>
+      </h1>
+
+      <p>
+        Manage your finances smarter with intelligent,
+        secure and seamless banking.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          routerLink="/accounts"
+          class="primary-button">
+          🏦 My Accounts
+        </a>
+
+        <a
+          routerLink="/transactions"
+          class="secondary-button">
+          ↔ Transactions
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- ================= BANK CARD ================= -->
+
+    <div class="bank-card">
+
+      <div class="card-top">
+
+        <span>AI BANK</span>
+
+        <span>💳</span>
+
+      </div>
+
+      <div class="chip">
+        ▦
+      </div>
+
+      <div class="card-number">
+
+        **** **** ****
+        {{ accounts.length > 0
+          ? accounts[0].accountNumber.slice(-4)
+          : '----' }}
+
+      </div>
+
+      <div class="card-bottom">
+
+        <div>
+          <small>AVAILABLE BALANCE</small>
+
+          <strong>
+            {{ totalBalance | currency:'INR':'symbol':'1.2-2' }}
+          </strong>
+        </div>
+
+        <span>VISA</span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= LOADING ================= -->
+
+  @if (isLoading) {
+
+    <div class="loading-state">
+
+      <div class="loader"></div>
+
+      <p>
+        Loading your banking data...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ================= ERROR ================= -->
+
+  @if (!isLoading && errorMessage) {
+
+    <div class="error-state">
+
+      <span>⚠️</span>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        (click)="loadDashboardData()">
+
+        Try Again
+
+      </button>
+
+    </div>
+
+  }
+
+
+  @if (!isLoading && !errorMessage) {
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="stats-section">
+
+      <div class="stat-card">
+
+        <div class="stat-icon balance-icon">
+          ₹
+        </div>
+
+        <div>
+
+          <span>Total Balance</span>
+
+          <h2>
+            {{ totalBalance | currency:'INR':'symbol':'1.2-2' }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon account-icon">
+          🏦
+        </div>
+
+        <div>
+
+          <span>Total Accounts</span>
+
+          <h2>
+            {{ totalAccounts }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon deposit-icon">
+          ↓
+        </div>
+
+        <div>
+
+          <span>Total Deposits</span>
+
+          <h2>
+            {{ totalDeposits | currency:'INR':'symbol':'1.2-2' }}
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon withdraw-icon">
+          ↑
+        </div>
+
+        <div>
+
+          <span>Total Withdrawals</span>
+
+          <h2>
+            {{ totalWithdrawals | currency:'INR':'symbol':'1.2-2' }}
+          </h2>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <section class="dashboard-content">
+
+      <!-- ================= RECENT TRANSACTIONS ================= -->
+
+      <div class="dashboard-card transactions-card">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="section-label">
+              ACTIVITY
+            </span>
+
+            <h2>
+              Recent Transactions
+            </h2>
+
+          </div>
+
+          <a
+            routerLink="/transaction-history"
+            class="view-all">
+
+            View All →
+
+          </a>
+
+        </div>
+
+
+        @if (getRecentTransactions().length === 0) {
+
+          <div class="empty-state">
+
+            <span>💸</span>
+
+            <h3>
+              No transactions yet
+            </h3>
+
+            <p>
+              Your recent transactions will appear here.
+            </p>
+
+          </div>
+
+        }
+
+
+        @for (
+          transaction of getRecentTransactions();
+          track transaction.id
+        ) {
+
+          <div class="transaction-item">
+
+            <div
+              class="transaction-icon"
+              [class.deposit]="
+                transaction.transactionType === 'DEPOSIT'
+              "
+              [class.withdraw]="
+                transaction.transactionType === 'WITHDRAW'
+              "
+              [class.transfer]="
+                transaction.transactionType === 'TRANSFER'
+              "
+            >
+
+              @if (
+                transaction.transactionType === 'DEPOSIT'
+              ) {
+                ↓
+              }
+
+              @if (
+                transaction.transactionType === 'WITHDRAW'
+              ) {
+                ↑
+              }
+
+              @if (
+                transaction.transactionType === 'TRANSFER'
+              ) {
+                ↔
+              }
+
+            </div>
+
+
+            <div class="transaction-details">
+
+              <h3>
+                {{ getTransactionTitle(transaction) }}
+              </h3>
+
+              <p>
+                {{ transaction.description || 'No description' }}
+              </p>
+
+              <small>
+                {{ transaction.transactionDate | date:'dd MMM yyyy, hh:mm a' }}
+              </small>
+
+            </div>
+
+
+            <div
+              class="transaction-amount"
+              [class.positive]="
+                transaction.transactionType === 'DEPOSIT'
+              "
+              [class.negative]="
+                transaction.transactionType !== 'DEPOSIT'
+              "
+            >
+
+              {{ getTransactionAmount(transaction) >= 0 ? '+' : '-' }}
+
+              {{ getTransactionAmount(transaction) < 0
+                ? (getTransactionAmount(transaction) * -1 | currency:'INR':'symbol':'1.2-2')
+                : (getTransactionAmount(transaction) | currency:'INR':'symbol':'1.2-2')
+              }}
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- ================= ACCOUNTS ================= -->
+
+      <div class="dashboard-card accounts-card">
+
+        <div class="section-header">
+
+          <div>
+
+            <span class="section-label">
+              YOUR MONEY
+            </span>
+
+            <h2>
+              My Accounts
+            </h2>
+
+          </div>
+
+          <a
+            routerLink="/accounts"
+            class="view-all">
+
+            View All →
+
+          </a>
+
+        </div>
+
+
+        @if (accounts.length === 0) {
+
+          <div class="empty-state">
+
+            <span>🏦</span>
+
+            <h3>
+              No accounts found
+            </h3>
+
+            <p>
+              Create your first bank account.
+            </p>
+
+            <a
+              routerLink="/accounts"
+              class="small-button">
+
+              Create Account
+
+            </a>
+
+          </div>
+
+        }
+
+
+        @for (account of accounts; track account.id) {
+
+          <div class="account-item">
+
+            <div class="account-icon">
+              🏦
+            </div>
+
+            <div class="account-details">
+
+              <h3>
+                {{ account.accountType }}
+              </h3>
+
+              <p>
+                {{ account.accountNumber }}
+              </p>
+
+            </div>
+
+            <div class="account-balance">
+
+              <span>Balance</span>
+
+              <strong>
+                {{ account.balance | currency:'INR':'symbol':'1.2-2' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= AI SECTION ================= -->
+
+    <section class="ai-section">
+
+      <div class="ai-content">
+
+        <span class="ai-badge">
+          🤖 AI COPILOT
+        </span>
+
+        <h2>
+          Your intelligent banking assistant
+        </h2>
+
+        <p>
+          Get instant insights about your accounts,
+          transactions and financial activity with
+          AI-powered assistance.
+        </p>
+
+        <button
+          type="button"
+          class="ai-button" routerLink="/ai-chat">
+
+          Ask AI Copilot
+          <span>→</span>
+
+        </button>
+
+      </div>
+
+
+      <div class="ai-visual">
+
+        <div class="ai-circle">
+          ✨
+        </div>
+
+        <div class="floating-message message-one">
+          💡 Spending insights
+        </div>
+
+        <div class="floating-message message-two">
+          📊 Smart analysis
+        </div>
+
+      </div>
+
+    </section>
+
+  }
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer class="dashboard-footer">
+
+    <p>
+      © 2026 AI Banking Copilot
+    </p>
+
+    <span>
+      Secure • Intelligent • Simple
+    </span>
+
+  </footer>
+
+</div>

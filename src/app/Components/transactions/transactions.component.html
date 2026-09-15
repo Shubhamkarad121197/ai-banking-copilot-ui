@@ -1,0 +1,551 @@
+<div class="transaction-page">
+
+  <!-- ================= PAGE HEADER ================= -->
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <span class="page-badge">
+        MONEY MANAGEMENT
+      </span>
+
+      <h1>Transactions</h1>
+
+      <p>
+        Manage your money with fast and seamless banking transactions.
+      </p>
+
+    </div>
+
+    <div class="header-icon">
+      ₹
+    </div>
+
+  </div>
+
+
+  <!-- ================= TRANSACTION GRID ================= -->
+
+  <div class="transaction-grid">
+
+
+    <!-- ================= DEPOSIT ================= -->
+
+    <div class="transaction-card deposit-container">
+
+      <div class="card-header">
+
+        <div class="card-icon deposit-icon">
+          ↓
+        </div>
+
+        <div>
+          <h2>Deposit Money</h2>
+
+          <p>
+            Add money to your account securely.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-divider"></div>
+
+
+      <form
+        [formGroup]="depositForm"
+        (ngSubmit)="deposit()">
+
+        <!-- Account ID -->
+
+        <div class="form-group">
+
+          <label for="depositAccountId">
+            Account ID
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon">
+              🏦
+            </span>
+
+            <input
+              id="depositAccountId"
+              type="number"
+              formControlName="accountId"
+              class="form-control"
+              placeholder="Enter your account ID"
+            />
+
+          </div>
+
+          @if (
+            depositForm.get('accountId')?.touched &&
+            depositForm.get('accountId')?.invalid
+          ) {
+
+            <small>
+              Account ID is required
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Amount -->
+
+        <div class="form-group">
+
+          <label for="depositAmount">
+            Amount
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon amount-icon">
+              ₹
+            </span>
+
+            <input
+              id="depositAmount"
+              type="number"
+              formControlName="amount"
+              class="form-control"
+              placeholder="Enter amount"
+            />
+
+          </div>
+
+          @if (
+            depositForm.get('amount')?.touched &&
+            depositForm.get('amount')?.invalid
+          ) {
+
+            <small>
+              Amount must be greater than ₹0
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Description -->
+
+        <div class="form-group">
+
+          <label for="depositDescription">
+            Description
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon">
+              ✎
+            </span>
+
+            <input
+              id="depositDescription"
+              type="text"
+              formControlName="description"
+              class="form-control"
+              placeholder="e.g. Salary deposit"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- Button -->
+
+        <button
+          type="submit"
+          class="transaction-button deposit-button"
+          [disabled]="depositForm.invalid">
+
+          <span>↓</span>
+
+          Deposit Money
+
+          <span class="button-arrow">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+    </div>
+
+
+
+    <!-- ================= WITHDRAW ================= -->
+
+    <div class="transaction-card withdraw-container">
+
+      <div class="card-header">
+
+        <div class="card-icon withdraw-icon">
+          ↑
+        </div>
+
+        <div>
+          <h2>Withdraw Money</h2>
+
+          <p>
+            Withdraw money from your account easily.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-divider"></div>
+
+
+      <form
+        [formGroup]="withdrawForm"
+        (ngSubmit)="withdraw()">
+
+
+        <!-- Account ID -->
+
+        <div class="form-group">
+
+          <label for="withdrawAccountId">
+            Account ID
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon">
+              🏦
+            </span>
+
+            <input
+              id="withdrawAccountId"
+              type="number"
+              formControlName="accountId"
+              class="form-control"
+              placeholder="Enter your account ID"
+            />
+
+          </div>
+
+          @if (
+            withdrawForm.get('accountId')?.touched &&
+            withdrawForm.get('accountId')?.invalid
+          ) {
+
+            <small>
+              Account ID is required
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Amount -->
+
+        <div class="form-group">
+
+          <label for="withdrawAmount">
+            Amount
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon amount-icon">
+              ₹
+            </span>
+
+            <input
+              id="withdrawAmount"
+              type="number"
+              formControlName="amount"
+              class="form-control"
+              placeholder="Enter amount"
+            />
+
+          </div>
+
+          @if (
+            withdrawForm.get('amount')?.touched &&
+            withdrawForm.get('amount')?.invalid
+          ) {
+
+            <small>
+              Amount must be greater than ₹0
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Description -->
+
+        <div class="form-group">
+
+          <label for="withdrawDescription">
+            Description
+          </label>
+
+          <div class="input-wrapper">
+
+            <span class="input-icon">
+              ✎
+            </span>
+
+            <input
+              id="withdrawDescription"
+              type="text"
+              formControlName="description"
+              class="form-control"
+              placeholder="e.g. ATM withdrawal"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- Button -->
+
+        <button
+          type="submit"
+          class="transaction-button withdraw-button"
+          [disabled]="withdrawForm.invalid">
+
+          <span>↑</span>
+
+          Withdraw Money
+
+          <span class="button-arrow">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+    </div>
+
+
+
+    <!-- ================= TRANSFER ================= -->
+
+    <div class="transaction-card transfer-container">
+
+      <div class="card-header">
+
+        <div class="card-icon transfer-icon">
+          ↔
+        </div>
+
+        <div>
+          <h2>Transfer Money</h2>
+
+          <p>
+            Send money quickly and securely.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="card-divider"></div>
+
+
+      <form
+        [formGroup]="transferForm"
+        (ngSubmit)="transfer()">
+
+
+        <!-- Accounts -->
+
+        <div class="transfer-row">
+
+
+          <!-- Sender -->
+
+          <div class="form-group">
+
+            <label for="senderAccountId">
+              Sender Account ID
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">
+                🏦
+              </span>
+
+              <input
+                id="senderAccountId"
+                type="number"
+                formControlName="senderAccountId"
+                class="form-control"
+                placeholder="Sender account ID"
+              />
+
+            </div>
+
+            @if (
+              transferForm.get('senderAccountId')?.touched &&
+              transferForm.get('senderAccountId')?.invalid
+            ) {
+
+              <small>
+                Sender Account ID is required
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Receiver -->
+
+          <div class="form-group">
+
+            <label for="receiverAccountId">
+              Receiver Account ID
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">
+                🏦
+              </span>
+
+              <input
+                id="receiverAccountId"
+                type="number"
+                formControlName="receiverAccountId"
+                class="form-control"
+                placeholder="Receiver account ID"
+              />
+
+            </div>
+
+            @if (
+              transferForm.get('receiverAccountId')?.touched &&
+              transferForm.get('receiverAccountId')?.invalid
+            ) {
+
+              <small>
+                Receiver Account ID is required
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Amount + Description -->
+
+        <div class="transfer-row">
+
+
+          <!-- Amount -->
+
+          <div class="form-group">
+
+            <label for="transferAmount">
+              Amount
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon amount-icon">
+                ₹
+              </span>
+
+              <input
+                id="transferAmount"
+                type="number"
+                formControlName="amount"
+                class="form-control"
+                placeholder="Enter amount"
+              />
+
+            </div>
+
+            @if (
+              transferForm.get('amount')?.touched &&
+              transferForm.get('amount')?.invalid
+            ) {
+
+              <small>
+                Amount must be greater than ₹0
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label for="transferDescription">
+              Description
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">
+                ✎
+              </span>
+
+              <input
+                id="transferDescription"
+                type="text"
+                formControlName="description"
+                class="form-control"
+                placeholder="e.g. Friend payment"
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Transfer Button -->
+
+        <button
+          type="submit"
+          class="transaction-button transfer-button"
+          [disabled]="transferForm.invalid">
+
+          <span>↔</span>
+
+          Transfer Money
+
+          <span class="button-arrow">
+            →
+          </span>
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

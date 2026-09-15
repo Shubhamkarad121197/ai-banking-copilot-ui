@@ -1,0 +1,268 @@
+<div class="accounts-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div class="header-content">
+
+      <span class="page-badge">
+        🏦 BANKING
+      </span>
+
+      <h1>My Accounts</h1>
+
+      <p>
+        Manage your accounts and keep track of your available balance.
+      </p>
+
+    </div>
+
+    <div class="header-icon">
+      ₹
+    </div>
+
+  </div>
+
+
+  <!-- ================= CREATE ACCOUNT ================= -->
+
+  <div class="create-account-card">
+
+    <div class="create-account-header">
+
+      <div class="create-icon">
+        +
+      </div>
+
+      <div>
+        <span class="section-label">
+          NEW ACCOUNT
+        </span>
+
+        <h2>Create New Account</h2>
+
+        <p>
+          Open a savings or current account in seconds.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="divider"></div>
+
+
+    <form
+      [formGroup]="accountCreationForm"
+      (ngSubmit)="createAccount()">
+
+      <div class="form-content">
+
+        <div class="form-group">
+
+          <label for="accountType">
+            Account Type
+          </label>
+
+          <div class="select-wrapper">
+
+            <span class="input-icon">
+              🏦
+            </span>
+
+            <select
+              id="accountType"
+              formControlName="accountType">
+
+              <option value="" disabled>
+                Select Account Type
+              </option>
+
+              <option value="SAVINGS">
+                Savings Account
+              </option>
+
+              <option value="CURRENT">
+                Current Account
+              </option>
+
+            </select>
+
+          </div>
+
+          @if (
+            accountCreationForm.get('accountType')?.touched &&
+            accountCreationForm.get('accountType')?.invalid
+          ) {
+
+            <small>
+              Please select an account type
+            </small>
+
+          }
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="create-button"
+          [disabled]="accountCreationForm.invalid">
+
+          <span>+</span>
+
+          Create Account
+
+          <span class="button-arrow">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <!-- ================= ACCOUNTS SECTION ================= -->
+
+  <div class="accounts-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <span class="section-label">
+          YOUR BANKING
+        </span>
+
+        <h2>Your Accounts</h2>
+
+      </div>
+
+      <span class="account-count">
+        {{ accounts.length }} Account{{ accounts.length !== 1 ? 's' : '' }}
+      </span>
+
+    </div>
+
+
+    <!-- ================= EMPTY STATE ================= -->
+
+    @if (accounts.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          🏦
+        </div>
+
+        <h3>No accounts found</h3>
+
+        <p>
+          Create your first account to start using AI Banking Copilot.
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- ================= ACCOUNT CARDS ================= -->
+
+    @else {
+
+      <div class="accounts-grid">
+
+        @for (
+          account of accounts;
+          track account.id
+        ) {
+
+          <div
+            class="account-card"
+            [class.savings-card]="account.accountType === 'SAVINGS'"
+            [class.current-card]="account.accountType === 'CURRENT'">
+
+            <!-- Card Top -->
+
+            <div class="account-card-top">
+
+              <div class="account-type">
+
+                <div class="account-icon">
+                  🏦
+                </div>
+
+                <div>
+
+                  <span>
+                    ACCOUNT TYPE
+                  </span>
+
+                  <h3>
+                    {{ account.accountType }}
+                  </h3>
+
+                </div>
+
+              </div>
+
+              <div class="card-menu">
+                •••
+              </div>
+
+            </div>
+
+
+            <!-- Account Number -->
+
+            <div class="account-number">
+
+              <span>
+                ACCOUNT NUMBER
+              </span>
+
+              <strong>
+                {{ account.accountNumber }}
+              </strong>
+
+            </div>
+
+
+            <!-- Balance -->
+
+            <div class="account-card-bottom">
+
+              <div>
+
+                <span>
+                  AVAILABLE BALANCE
+                </span>
+
+                <h2>
+                  ₹ {{ account.balance | number:'1.2-2' }}
+                </h2>
+
+              </div>
+
+              <div class="card-symbol">
+                VISA
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

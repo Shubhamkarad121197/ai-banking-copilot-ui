@@ -1,0 +1,711 @@
+/* ========================================
+   MAIN PAGE
+======================================== */
+
+.transaction-page {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 40px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(99, 102, 241, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(139, 92, 246, 0.14),
+      transparent 30%
+    ),
+    #f5f7fb;
+
+  color: #202431;
+}
+
+
+/* ========================================
+   PAGE HEADER
+======================================== */
+
+.page-header {
+  max-width: 1150px;
+
+  margin: 0 auto 30px;
+
+  padding: 32px 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #667eea,
+      #764ba2
+    );
+
+  color: white;
+
+  box-shadow:
+    0 20px 45px rgba(102, 126, 234, 0.25);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+.page-header::after {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  right: -90px;
+  top: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+.header-content {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+.page-badge {
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  margin-bottom: 10px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  letter-spacing: 1px;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  font-size: 34px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.5px;
+}
+
+
+.page-header p {
+  margin: 8px 0 0;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 14px;
+}
+
+
+.header-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width: 75px;
+  height: 75px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(10px);
+
+  font-size: 38px;
+}
+
+
+/* ========================================
+   TRANSACTION GRID
+======================================== */
+
+.transaction-grid {
+  max-width: 1150px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
+}
+
+
+/* ========================================
+   TRANSACTION CARD
+======================================== */
+
+.transaction-card {
+  position: relative;
+
+  padding: 28px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 15px 40px rgba(31, 41, 55, 0.07);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.transaction-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 22px 50px rgba(31, 41, 55, 0.12);
+}
+
+
+/* Top colored line */
+
+.transaction-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 28px;
+
+  right: 28px;
+
+  height: 4px;
+
+  border-radius: 0 0 10px 10px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #667eea,
+      #764ba2
+    );
+}
+
+
+/* Transfer full width */
+
+.transfer-container {
+  grid-column: 1 / -1;
+}
+
+
+/* ========================================
+   CARD HEADER
+======================================== */
+
+.card-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.card-icon {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 15px;
+
+  font-size: 25px;
+
+  font-weight: 700;
+}
+
+
+/* Deposit */
+
+.deposit-icon {
+  background: #ecfdf5;
+
+  color: #16a34a;
+}
+
+
+/* Withdraw */
+
+.withdraw-icon {
+  background: #fff1f2;
+
+  color: #e11d48;
+}
+
+
+/* Transfer */
+
+.transfer-icon {
+  background: #eef2ff;
+
+  color: #6366f1;
+}
+
+
+.card-header h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+
+.card-header p {
+  margin: 5px 0 0;
+
+  color: #8b91a0;
+
+  font-size: 12px;
+}
+
+
+/* ========================================
+   DIVIDER
+======================================== */
+
+.card-divider {
+  height: 1px;
+
+  margin: 24px 0;
+
+  background: #eceef3;
+}
+
+
+/* ========================================
+   FORM
+======================================== */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #353a49;
+
+  font-size: 13px;
+
+  font-weight: 650;
+}
+
+
+/* ========================================
+   INPUT WRAPPER
+======================================== */
+
+.input-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+
+.input-icon {
+  position: absolute;
+
+  left: 15px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  font-size: 16px;
+
+  pointer-events: none;
+}
+
+
+.amount-icon {
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: #667eea;
+}
+
+
+/* ========================================
+   INPUT
+======================================== */
+
+.form-control {
+  width: 100%;
+
+  height: 48px;
+
+  box-sizing: border-box;
+
+  padding:
+    0 15px 0 45px;
+
+  border: 1px solid #e1e4eb;
+
+  border-radius: 12px;
+
+  background: #fafbfc;
+
+  color: #252936;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+
+.form-control::placeholder {
+  color: #a3a8b3;
+}
+
+
+.form-control:hover {
+  border-color: #cbd0dc;
+}
+
+
+.form-control:focus {
+  background: #ffffff;
+
+  border-color: #667eea;
+
+  box-shadow:
+    0 0 0 4px rgba(102, 126, 234, 0.10);
+}
+
+
+/* Remove number arrows */
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+
+  appearance: none;
+}
+
+
+/* ========================================
+   VALIDATION
+======================================== */
+
+small {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #e05252;
+
+  font-size: 11px;
+}
+
+
+/* ========================================
+   TRANSFER ROW
+======================================== */
+
+.transfer-row {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+}
+
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.transaction-button {
+  width: 100%;
+
+  height: 48px;
+
+  margin-top: 5px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.transaction-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+
+.transaction-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+/* ========================================
+   DEPOSIT BUTTON
+======================================== */
+
+.deposit-button {
+  background:
+    linear-gradient(
+      135deg,
+      #10b981,
+      #059669
+    );
+
+  box-shadow:
+    0 8px 18px rgba(16, 185, 129, 0.22);
+}
+
+
+.deposit-button:hover:not(:disabled) {
+  box-shadow:
+    0 12px 25px rgba(16, 185, 129, 0.30);
+}
+
+
+/* ========================================
+   WITHDRAW BUTTON
+======================================== */
+
+.withdraw-button {
+  background:
+    linear-gradient(
+      135deg,
+      #f43f5e,
+      #e11d48
+    );
+
+  box-shadow:
+    0 8px 18px rgba(244, 63, 94, 0.20);
+}
+
+
+.withdraw-button:hover:not(:disabled) {
+  box-shadow:
+    0 12px 25px rgba(244, 63, 94, 0.28);
+}
+
+
+/* ========================================
+   TRANSFER BUTTON
+======================================== */
+
+.transfer-button {
+  background:
+    linear-gradient(
+      135deg,
+      #667eea,
+      #764ba2
+    );
+
+  box-shadow:
+    0 8px 18px rgba(102, 126, 234, 0.22);
+}
+
+
+.transfer-button:hover:not(:disabled) {
+  box-shadow:
+    0 12px 25px rgba(102, 126, 234, 0.30);
+}
+
+
+/* ========================================
+   DISABLED BUTTON
+======================================== */
+
+.transaction-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+.button-arrow {
+  font-size: 17px;
+
+  margin-left: 3px;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+
+  .transaction-page {
+    padding: 25px;
+  }
+
+  .transaction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transfer-container {
+    grid-column: auto;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .transaction-page {
+    padding: 15px;
+  }
+
+  .page-header {
+    padding: 25px;
+
+    border-radius: 20px;
+  }
+
+  .page-header h1 {
+    font-size: 27px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+  }
+
+  .header-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 28px;
+  }
+
+  .transaction-card {
+    padding: 22px;
+
+    border-radius: 18px;
+  }
+
+  .transfer-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+
+    font-size: 22px;
+
+    border-radius: 14px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .card-header h2 {
+    font-size: 18px;
+  }
+
+}

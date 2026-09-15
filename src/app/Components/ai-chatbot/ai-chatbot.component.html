@@ -1,0 +1,234 @@
+<div class="chat-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="chat-header">
+
+    <div class="header-left">
+
+      <div class="ai-avatar">
+        🤖
+      </div>
+
+      <div>
+
+        <span class="status">
+          ● ONLINE
+        </span>
+
+        <h1>
+          AI Banking Copilot
+        </h1>
+
+        <p>
+          Your intelligent banking assistant
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= CHAT BODY ================= -->
+
+  <div class="chat-container">
+
+    <!-- Welcome -->
+
+    @if (messages.length === 1) {
+
+      <div class="welcome-section">
+
+        <div class="welcome-icon">
+          ✨
+        </div>
+
+        <h2>
+          How can I help you?
+        </h2>
+
+        <p>
+          Ask me anything about your banking activity.
+        </p>
+
+
+        <!-- Quick Questions -->
+
+        <div class="quick-actions">
+
+          <button
+            type="button"
+            (click)="sendQuickMessage('What is my account balance?')">
+
+            💰
+            <span>
+              Check balance
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            (click)="sendQuickMessage('Show me my recent transactions')">
+
+            📊
+            <span>
+              Recent transactions
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            (click)="sendQuickMessage('Give me spending insights')">
+
+            💡
+            <span>
+              Spending insights
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            (click)="sendQuickMessage('How can I manage my accounts?')">
+
+            🏦
+            <span>
+              Account help
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+
+    <!-- ================= MESSAGES ================= -->
+
+    <div class="messages-container">
+
+      @for (
+        chat of messages;
+        track $index
+      ) {
+
+        <div
+          class="message-row"
+          [class.user-row]="chat.role === 'user'"
+          [class.ai-row]="chat.role === 'assistant'">
+
+
+          <!-- AI Avatar -->
+
+          @if (chat.role === 'assistant') {
+
+            <div class="message-avatar">
+              🤖
+            </div>
+
+          }
+
+
+          <div class="message-wrapper">
+
+            <div
+              class="message-bubble"
+              [class.user-message]="chat.role === 'user'"
+              [class.ai-message]="chat.role === 'assistant'">
+
+              {{ chat.message }}
+
+            </div>
+
+            <span class="message-time">
+
+              {{ chat.time | date:'hh:mm a' }}
+
+            </span>
+
+          </div>
+
+
+          <!-- User Avatar -->
+
+          @if (chat.role === 'user') {
+
+            <div class="message-avatar user-avatar">
+              👤
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+
+      <!-- ================= TYPING ================= -->
+
+      @if (isLoading) {
+
+        <div class="message-row ai-row">
+
+          <div class="message-avatar">
+            🤖
+          </div>
+
+          <div class="typing-indicator">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= INPUT ================= -->
+
+  <div class="chat-input-area">
+
+    <div class="input-container">
+
+      <textarea
+        [(ngModel)]="userMessage"
+        (keydown)="handleEnter($event)"
+        placeholder="Ask your banking assistant..."
+        rows="1">
+      </textarea>
+
+      <button
+        type="button"
+        class="send-button"
+        [disabled]="!userMessage.trim() || isLoading"
+        (click)="sendMessage()">
+
+        ➤
+
+      </button>
+
+    </div>
+
+    <p class="input-hint">
+      AI can make mistakes. Please verify important banking information.
+    </p>
+
+  </div>
+
+</div>
